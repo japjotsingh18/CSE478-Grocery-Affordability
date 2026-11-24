@@ -1,0 +1,136 @@
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --ink: #17213a;
+  --muted: #566176;
+  --rule: #d8dde6;
+  --maroon: #8c1d40;        
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.55;
+}
+
+.site-header {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 40px 24px 8px;
+}
+h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.1;
+  color: var(--maroon);
+}
+.subtitle {
+  margin: 10px 0 0;
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  font-style: italic;
+  color: var(--ink);
+}
+.intro { max-width: 68ch; margin: 18px 0 8px; }
+.team { margin: 0 0 14px; font-size: 0.92rem; color: var(--muted); }
+.wip { margin: 0; font-size: 0.95rem; color: var(--muted); }
+
+main { max-width: 920px; margin: 0 auto; padding: 16px 24px 32px; }
+section {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
+.chart-help { margin: 0 0 14px; color: var(--muted); font-size: 0.95rem; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+.legend legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.legend-item:has(input:focus-visible) { outline: 3px solid #1f6fb2; outline-offset: 2px; }
+.legend-item input { margin: 0; width: 16px; height: 16px; cursor: pointer; }
+.swatch { width: 26px; height: 0; border-top: 4px solid currentColor; border-radius: 2px; }
+.legend-item .unit { color: var(--muted); font-size: 0.9rem; }
+.legend-item:has(input:not(:checked)) { opacity: 0.55; }
+
+.chart-wrap { position: relative; width: 100%; }
+.chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.axis text { font-family: var(--sans); font-size: 12px; fill: var(--muted); }
+.axis path, .axis line { stroke: var(--muted); }
+.grid line { stroke: var(--rule); }
+.grid path { display: none; }
+.axis-title { font-family: var(--sans); font-size: 13px; fill: var(--ink); }
+.line { fill: none; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.hover-line { stroke: var(--muted); stroke-dasharray: 3 3; }
+.empty-msg { font-family: var(--sans); font-size: 15px; fill: var(--muted); }
+
+
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  min-width: 170px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(20, 30, 60, 0.18);
+  font-size: 0.88rem;
+  pointer-events: none;
+}
+
+.tooltip[hidden] { display: none; }
+.tooltip .tt-month { margin: 0 0 6px; font-weight: 700; }
+.tooltip .tt-row { display: flex; align-items: baseline; gap: 8px; margin: 2px 0; }
+.tooltip .tt-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.tooltip .tt-name { font-weight: 600; min-width: 46px; }
+.tooltip .tt-price { margin-left: auto; font-variant-numeric: tabular-nums; }
+.tooltip .tt-unit { color: var(--muted); }
+.tooltip .tt-none { color: var(--muted); font-style: italic; }
+
+.note { margin: 10px 0 0; font-size: 0.92rem; color: var(--muted); }
+
+.about ul { margin: 10px 0 0; padding-left: 20px; }
+.about li { margin-bottom: 8px; max-width: 75ch; }
+.site-footer {
+  max-width: 920px; margin: 0 auto; padding: 0 24px 40px;
+  color: var(--muted); font-size: 0.85rem;
+}
+
+
+.error-box 
+{
+  padding: 14px 16px;
+  border-left: 4px solid #b42318;
+  background: #fdecea;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 600px) {
+  section { padding: 16px; }
+  .site-header { padding-top: 24px; }
+}
+.site-footer a { color: var(--maroon); }
