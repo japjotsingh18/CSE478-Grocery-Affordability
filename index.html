@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Can Students Still Afford the Basics?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>Can Students Still Afford the Basics?</h1>
+    <p class="subtitle">
+      An Interactive Visual Story of Food Prices and the Student Grocery Budget
+    </p>
+    <p class="intro">
+      This project explores how grocery prices in the U.S. have changed from 2016 - 2026 as well as how these
+      changes can affect college students. We are starting by comparing the prices of 3 common
+      grocery items:- eggs, milk, and bread.
+    </p>
+    <p class="team">Japjot Singh · Ramneek Kaur · Anushvi Arora</p>
+    <p class="wip">
+      We have collected and cleaned the grocery price data and created our first interactive line chart.
+      The remaining visualizations and student budget comparison will be added later.
+    </p>
+  </header>
+
+  <main>
+    <section class="chart-section" aria-labelledby="chart-title">
+      <h2 id="chart-title">Grocery Prices in the U.S. (2016–2026)</h2>
+      <p class="chart-help">Select the grocery items you want to see. Hover over the lines to view their prices.</p>
+
+      <!-- The legend and the product checkboxes are the same control. script.js fills it in from the CSV. -->
+      <fieldset class="legend" id="legend">
+        <legend>Legend and product selector</legend>
+      </fieldset>
+
+      <div class="chart-wrap" id="chart">
+        <div class="tooltip" id="tooltip" role="status" aria-live="polite" hidden></div>
+      </div>
+
+      <p class="note">Note: October 2025 data is unavailable.</p>
+      <p class="note">Note: Eggs are priced per dozen, milk per gallon and bread per pound. Each item should be compared with its own past prices.</p>
+    </section>
+
+    <section class="about" aria-labelledby="about-title">
+      <h2 id="about-title">About the Data</h2>
+      <ul>
+        <li><strong>Source:</strong> U.S. Bureau of Labor Statistics (BLS), accessed through FRED.</li>
+        <li><strong>Items:</strong> Eggs, milk, and white bread.</li>
+        <li><strong>Time Period:</strong> January 2016 – October 2026.</li>
+        <li><strong>Dataset:</strong> 387 monthly price records.</li>
+        <li><strong>Missing Data:</strong> October 2025 prices were unavailable, so those values were left out.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="data-sources">
+    <strong>Data Sources</strong> (FRED, from the U.S. Bureau of Labor Statistics):
+    <a href="https://fred.stlouisfed.org/series/APU0000708111">Eggs (APU0000708111)</a> ·
+    <a href="https://fred.stlouisfed.org/series/APU0000709112">Milk (APU0000709112)</a> ·
+    <a href="https://fred.stlouisfed.org/series/APU0000702111">Bread (APU0000702111)</a>
+  </footer>
+
+  <!-- D3 v7.9.0 is included in the project folder so the page works without a CDN -->
+  <script src="vendor/d3.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
