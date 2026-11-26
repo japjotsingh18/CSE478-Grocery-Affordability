@@ -166,6 +166,33 @@ h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
 .heatmap-tooltip .tt-title { margin-bottom: 5px; font-weight: 700; }
 .heatmap-tooltip .tt-status { color: var(--muted); font-style: italic; }
 
+.scatterplot-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 16px 0 8px;
+}
+.scatterplot-controls label:not(:first-child) { margin-left: 10px; }
+.scatterplot-controls select {
+  padding: 6px 28px 6px 8px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+.scatterplot-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 8px; }
+.scatterplot-legend-item { display: inline-flex; align-items: center; gap: 7px; font-size: 0.92rem; }
+.scatterplot-legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+.scatter-point { stroke: #fff; stroke-width: 2; cursor: pointer; }
+.scatter-point:focus { outline: none; stroke: var(--ink); stroke-width: 3; }
+.scatter-label { font-family: var(--sans); font-size: 12px; font-weight: 700; fill: var(--ink); pointer-events: none; }
+.zero-line { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.zero-label { font-family: var(--sans); font-size: 11px; fill: var(--muted); }
+.scatterplot-tooltip p { margin: 2px 0; }
+.scatterplot-tooltip .tt-title { margin-bottom: 5px; font-weight: 700; }
+
 .about ul { margin: 10px 0 0; padding-left: 20px; }
 .about li { margin-bottom: 8px; max-width: 75ch; }
 .site-footer {
@@ -185,5 +212,6 @@ h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
 @media (max-width: 600px) {
   section { padding: 16px; }
   .site-header { padding-top: 24px; }
+  .scatterplot-controls label:not(:first-child) { margin-left: 0; }
 }
 .site-footer a { color: var(--maroon); }
