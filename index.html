@@ -40,6 +40,40 @@
       <p class="note">Note: Eggs are priced per dozen, milk per gallon and bread per pound. Each item should be compared with its own past prices.</p>
     </section>
 
+    <section class="heatmap-section" aria-labelledby="heatmap-title">
+      <h2 id="heatmap-title">Monthly Grocery Price Heatmap (2016–2026)</h2>
+
+      <p class="team-todo">
+        <strong>TEAM TODO — Visualization introduction (2–3 sentences):</strong>
+        Introduce the heatmap and explain its purpose before the visualization.
+      </p>
+
+      <div class="heatmap-controls">
+        <label for="heatmap-product"><strong>Grocery item:</strong></label>
+        <select id="heatmap-product">
+          <option value="Eggs">Eggs</option>
+          <option value="Milk">Milk</option>
+          <option value="Bread">Bread</option>
+        </select>
+      </div>
+
+      <p class="chart-help">Select a grocery item. Hover over a cell to view its monthly price.</p>
+
+      <div class="chart-wrap" id="heatmap">
+        <div class="tooltip heatmap-tooltip" id="heatmap-tooltip" role="status" aria-live="polite" hidden></div>
+      </div>
+
+      <div class="heatmap-key" aria-label="Heatmap status key">
+        <span><span class="key-swatch missing-swatch"></span>Missing observation</span>
+        <span><span class="key-swatch outside-swatch"></span>Outside dataset range</span>
+      </div>
+
+      <p class="team-todo">
+        <strong>TEAM TODO — Observations and story connection (3–4 sentences):</strong>
+        Discuss observed patterns and connect the heatmap to the overall project story after the visualization.
+      </p>
+    </section>
+
     <section class="about" aria-labelledby="about-title">
       <h2 id="about-title">About the Data</h2>
       <ul>

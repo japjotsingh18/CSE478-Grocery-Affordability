@@ -198,9 +198,200 @@ function init(rows) {
 
   draw();
 
+  initHeatmap(rows, products, unitOf, lastDate);
+
   let lastWidth = chartDiv.clientWidth;
 
   window.addEventListener("resize", () => {
     if (chartDiv.clientWidth !== lastWidth) { lastWidth = chartDiv.clientWidth; draw(); }
   });
+}
+
+function initHeatmap(rows, products, unitOf, lastDate) {
+  const heatmapDiv = document.getElementById("heatmap");
+  const productSelect = document.getElementById("heatmap-product");
+  const heatmapTooltip = document.getElementById("heatmap-tooltip");
+  const years = d3.range(2016, 2027);
+  const months = d3.range(1, 13);
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const heatmapLookup = new Map();
+
+  rows.forEach(row => {
+    heatmapLookup.set(`${row.product}-${formatMonthKey(row.date)}`, row.price);
+  });
+
+  productSelect.innerHTML = "";
+  products.forEach(product => {
+    const option = document.createElement("option");
+    option.value = product;
+    option.textContent = product;
+    productSelect.appendChild(option);
+  });
+
+  function drawHeatmap() {
+    const selectedProduct = productSelect.value;
+    const productRows = rows.filter(row => row.product === selectedProduct);
+    const [minimumPrice, maximumPrice] = d3.extent(productRows, row => row.price);
+    const colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
+      .domain([minimumPrice, maximumPrice]);
+
+    heatmapTooltip.hidden = true;
+    d3.select(heatmapDiv).select("svg").remove();
+
+    const width = heatmapDiv.clientWidth || 800;
+    const margin = { top: width < 560 ? 58 : 42, right: 20, bottom: 86, left: 54 };
+    const innerWidth = width - margin.left - margin.right;
+    const cellHeight = width < 560 ? 25 : 31;
+    const innerHeight = years.length * cellHeight;
+    const height = margin.top + innerHeight + margin.bottom;
+
+    const svg = d3.select(heatmapDiv).insert("svg", ":first-child")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("role", "img")
+      .attr("aria-label", `${selectedProduct} monthly price heatmap from 2016 through 2026`);
+
+    const definitions = svg.append("defs");
+    const outsidePattern = definitions.append("pattern")
+      .attr("id", "outside-data-pattern")
+      .attr("width", 8)
+      .attr("height", 8)
+      .attr("patternUnits", "userSpaceOnUse")
+      .attr("patternTransform", "rotate(45)");
+
+    outsidePattern.append("rect").attr("width", 8).attr("height", 8).attr("fill", "#f4f6f9");
+    outsidePattern.append("line")
+      .attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", 8)
+      .attr("stroke", "#c8ced8").attr("stroke-width", 3);
+
+    const legendGradient = definitions.append("linearGradient")
+      .attr("id", "heatmap-color-gradient");
+
+    d3.range(0, 1.01, 0.1).forEach(value => {
+      legendGradient.append("stop")
+        .attr("offset", `${value * 100}%`)
+        .attr("stop-color", colorScale(minimumPrice + value * (maximumPrice - minimumPrice)));
+    });
+
+    const chart = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const xScale = d3.scaleBand().domain(months).range([0, innerWidth]).padding(0.04);
+    const yScale = d3.scaleBand().domain(years).range([0, innerHeight]).padding(0.04);
+
+    chart.append("g")
+      .attr("class", "heatmap-axis")
+      .call(d3.axisTop(xScale).tickFormat(month => monthNames[month - 1]).tickSize(0))
+      .selectAll("text")
+      .attr("transform", width < 560 ? "rotate(-60)" : null)
+      .attr("text-anchor", width < 560 ? "start" : "middle")
+      .attr("dx", width < 560 ? "0.4em" : null)
+      .attr("dy", width < 560 ? "-0.2em" : null);
+
+    chart.append("g")
+      .attr("class", "heatmap-axis")
+      .call(d3.axisLeft(yScale).tickFormat(year => year).tickSize(0));
+
+    const cells = [];
+    years.forEach(year => {
+      months.forEach(month => {
+        const monthKey = `${year}-${String(month).padStart(2, "0")}`;
+        const date = parseMonth(monthKey);
+        const price = heatmapLookup.get(`${selectedProduct}-${monthKey}`);
+        let status = "price";
+        if (date > lastDate) status = "outside";
+        else if (price === undefined) status = "missing";
+        cells.push({ year, month, monthKey, price, status });
+      });
+    });
+
+    chart.selectAll("rect.heatmap-cell")
+      .data(cells)
+      .join("rect")
+      .attr("class", cell => `heatmap-cell ${cell.status}-cell`)
+      .attr("data-month", cell => cell.monthKey)
+      .attr("data-status", cell => cell.status)
+      .attr("data-price", cell => cell.price === undefined ? "" : cell.price)
+      .attr("x", cell => xScale(cell.month))
+      .attr("y", cell => yScale(cell.year))
+      .attr("width", xScale.bandwidth())
+      .attr("height", yScale.bandwidth())
+      .attr("fill", cell => {
+        if (cell.status === "outside") return "url(#outside-data-pattern)";
+        if (cell.status === "missing") return "#b8bec9";
+        return colorScale(cell.price);
+      })
+      .attr("tabindex", 0)
+      .attr("aria-label", cell => heatmapCellLabel(cell, selectedProduct, unitOf.get(selectedProduct), monthNames))
+      .on("pointermove focus", function(event, cell) {
+        showHeatmapTooltip(event, cell, selectedProduct, unitOf.get(selectedProduct), monthNames, heatmapDiv, heatmapTooltip);
+      })
+      .on("pointerleave blur", () => { heatmapTooltip.hidden = true; });
+
+    const legendWidth = Math.min(250, innerWidth * 0.55);
+    const legendX = margin.left;
+    const legendY = margin.top + innerHeight + 35;
+    const legend = svg.append("g")
+      .attr("class", "heatmap-legend")
+      .attr("transform", `translate(${legendX},${legendY})`);
+
+    legend.append("text")
+      .attr("class", "heatmap-legend-title")
+      .attr("y", -8)
+      .text(`${selectedProduct} price per ${unitOf.get(selectedProduct)}`);
+
+    legend.append("rect")
+      .attr("width", legendWidth)
+      .attr("height", 14)
+      .attr("fill", "url(#heatmap-color-gradient)");
+
+    const legendScale = d3.scaleLinear()
+      .domain([minimumPrice, maximumPrice])
+      .range([0, legendWidth]);
+
+    legend.append("g")
+      .attr("transform", "translate(0,14)")
+      .call(d3.axisBottom(legendScale).tickValues([minimumPrice, maximumPrice]).tickFormat(formatPrice).tickSize(4));
+  }
+
+  productSelect.addEventListener("change", drawHeatmap);
+  drawHeatmap();
+
+  let lastHeatmapWidth = heatmapDiv.clientWidth;
+  window.addEventListener("resize", () => {
+    if (heatmapDiv.clientWidth !== lastHeatmapWidth) {
+      lastHeatmapWidth = heatmapDiv.clientWidth;
+      drawHeatmap();
+    }
+  });
+}
+
+function heatmapCellLabel(cell, product, unit, monthNames) {
+  const dateLabel = `${monthNames[cell.month - 1]} ${cell.year}`;
+  if (cell.status === "outside") return `${product}, ${dateLabel}, outside dataset range`;
+  if (cell.status === "missing") return `${product}, ${dateLabel}, missing observation`;
+  return `${product}, ${dateLabel}, ${formatPrice(cell.price)} per ${unit}`;
+}
+
+function showHeatmapTooltip(event, cell, product, unit, monthNames, heatmapDiv, heatmapTooltip) {
+  let detail;
+  if (cell.status === "outside") detail = '<p class="tt-status">Outside dataset range</p>';
+  else if (cell.status === "missing") detail = '<p class="tt-status">Missing observation</p>';
+  else detail = `<p><strong>Price:</strong> ${formatPrice(cell.price)} / ${unit}</p>`;
+
+  heatmapTooltip.innerHTML =
+    `<p class="tt-title">${product}</p>` +
+    `<p><strong>Month:</strong> ${monthNames[cell.month - 1]}</p>` +
+    `<p><strong>Year:</strong> ${cell.year}</p>` + detail;
+  heatmapTooltip.dataset.product = product;
+  heatmapTooltip.dataset.month = cell.monthKey;
+  heatmapTooltip.dataset.status = cell.status;
+  heatmapTooltip.hidden = false;
+
+  const containerBox = heatmapDiv.getBoundingClientRect();
+  const pointerX = event.clientX ? event.clientX - containerBox.left : 0;
+  const pointerY = event.clientY ? event.clientY - containerBox.top : 0;
+  let left = pointerX + 14;
+  if (left + heatmapTooltip.offsetWidth > heatmapDiv.clientWidth) {
+    left = pointerX - heatmapTooltip.offsetWidth - 14;
+  }
+  heatmapTooltip.style.left = Math.max(0, left) + "px";
+  heatmapTooltip.style.top = Math.max(0, pointerY + 10) + "px";
 }
