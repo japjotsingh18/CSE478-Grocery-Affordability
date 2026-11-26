@@ -1,0 +1,388 @@
+date,product,category,price,unit
+2016-01,Bread,Grains,1.425,pound
+2016-01,Eggs,Dairy and Eggs,2.328,dozen
+2016-01,Milk,Dairy and Eggs,3.313,gallon
+2016-02,Bread,Grains,1.407,pound
+2016-02,Eggs,Dairy and Eggs,2.267,dozen
+2016-02,Milk,Dairy and Eggs,3.230,gallon
+2016-03,Bread,Grains,1.416,pound
+2016-03,Eggs,Dairy and Eggs,2.081,dozen
+2016-03,Milk,Dairy and Eggs,3.187,gallon
+2016-04,Bread,Grains,1.406,pound
+2016-04,Eggs,Dairy and Eggs,1.793,dozen
+2016-04,Milk,Dairy and Eggs,3.155,gallon
+2016-05,Bread,Grains,1.382,pound
+2016-05,Eggs,Dairy and Eggs,1.684,dozen
+2016-05,Milk,Dairy and Eggs,3.157,gallon
+2016-06,Bread,Grains,1.333,pound
+2016-06,Eggs,Dairy and Eggs,1.491,dozen
+2016-06,Milk,Dairy and Eggs,3.115,gallon
+2016-07,Bread,Grains,1.349,pound
+2016-07,Eggs,Dairy and Eggs,1.546,dozen
+2016-07,Milk,Dairy and Eggs,3.062,gallon
+2016-08,Bread,Grains,1.341,pound
+2016-08,Eggs,Dairy and Eggs,1.455,dozen
+2016-08,Milk,Dairy and Eggs,3.141,gallon
+2016-09,Bread,Grains,1.329,pound
+2016-09,Eggs,Dairy and Eggs,1.471,dozen
+2016-09,Milk,Dairy and Eggs,3.229,gallon
+2016-10,Bread,Grains,1.343,pound
+2016-10,Eggs,Dairy and Eggs,1.390,dozen
+2016-10,Milk,Dairy and Eggs,3.292,gallon
+2016-11,Bread,Grains,1.362,pound
+2016-11,Eggs,Dairy and Eggs,1.321,dozen
+2016-11,Milk,Dairy and Eggs,3.280,gallon
+2016-12,Bread,Grains,1.362,pound
+2016-12,Eggs,Dairy and Eggs,1.383,dozen
+2016-12,Milk,Dairy and Eggs,3.290,gallon
+2017-01,Bread,Grains,1.351,pound
+2017-01,Eggs,Dairy and Eggs,1.599,dozen
+2017-01,Milk,Dairy and Eggs,3.318,gallon
+2017-02,Bread,Grains,1.358,pound
+2017-02,Eggs,Dairy and Eggs,1.464,dozen
+2017-02,Milk,Dairy and Eggs,3.300,gallon
+2017-03,Bread,Grains,1.329,pound
+2017-03,Eggs,Dairy and Eggs,1.404,dozen
+2017-03,Milk,Dairy and Eggs,3.315,gallon
+2017-04,Bread,Grains,1.328,pound
+2017-04,Eggs,Dairy and Eggs,1.409,dozen
+2017-04,Milk,Dairy and Eggs,3.259,gallon
+2017-05,Bread,Grains,1.327,pound
+2017-05,Eggs,Dairy and Eggs,1.414,dozen
+2017-05,Milk,Dairy and Eggs,3.242,gallon
+2017-06,Bread,Grains,1.335,pound
+2017-06,Eggs,Dairy and Eggs,1.332,dozen
+2017-06,Milk,Dairy and Eggs,3.213,gallon
+2017-07,Bread,Grains,1.327,pound
+2017-07,Eggs,Dairy and Eggs,1.333,dozen
+2017-07,Milk,Dairy and Eggs,3.219,gallon
+2017-08,Bread,Grains,1.348,pound
+2017-08,Eggs,Dairy and Eggs,1.367,dozen
+2017-08,Milk,Dairy and Eggs,3.168,gallon
+2017-09,Bread,Grains,1.349,pound
+2017-09,Eggs,Dairy and Eggs,1.422,dozen
+2017-09,Milk,Dairy and Eggs,3.209,gallon
+2017-10,Bread,Grains,1.328,pound
+2017-10,Eggs,Dairy and Eggs,1.540,dozen
+2017-10,Milk,Dairy and Eggs,3.158,gallon
+2017-11,Bread,Grains,1.295,pound
+2017-11,Eggs,Dairy and Eggs,1.506,dozen
+2017-11,Milk,Dairy and Eggs,3.150,gallon
+2017-12,Bread,Grains,1.316,pound
+2017-12,Eggs,Dairy and Eggs,1.815,dozen
+2017-12,Milk,Dairy and Eggs,3.155,gallon
+2018-01,Bread,Grains,1.281,pound
+2018-01,Eggs,Dairy and Eggs,1.769,dozen
+2018-01,Milk,Dairy and Eggs,2.961,gallon
+2018-02,Bread,Grains,1.265,pound
+2018-02,Eggs,Dairy and Eggs,1.755,dozen
+2018-02,Milk,Dairy and Eggs,2.923,gallon
+2018-03,Bread,Grains,1.309,pound
+2018-03,Eggs,Dairy and Eggs,1.831,dozen
+2018-03,Milk,Dairy and Eggs,2.903,gallon
+2018-04,Bread,Grains,1.281,pound
+2018-04,Eggs,Dairy and Eggs,2.081,dozen
+2018-04,Milk,Dairy and Eggs,2.924,gallon
+2018-05,Bread,Grains,1.293,pound
+2018-05,Eggs,Dairy and Eggs,1.987,dozen
+2018-05,Milk,Dairy and Eggs,2.919,gallon
+2018-06,Bread,Grains,1.279,pound
+2018-06,Eggs,Dairy and Eggs,1.628,dozen
+2018-06,Milk,Dairy and Eggs,2.877,gallon
+2018-07,Bread,Grains,1.293,pound
+2018-07,Eggs,Dairy and Eggs,1.725,dozen
+2018-07,Milk,Dairy and Eggs,2.839,gallon
+2018-08,Bread,Grains,1.302,pound
+2018-08,Eggs,Dairy and Eggs,1.622,dozen
+2018-08,Milk,Dairy and Eggs,2.871,gallon
+2018-09,Bread,Grains,1.288,pound
+2018-09,Eggs,Dairy and Eggs,1.651,dozen
+2018-09,Milk,Dairy and Eggs,2.890,gallon
+2018-10,Bread,Grains,1.277,pound
+2018-10,Eggs,Dairy and Eggs,1.660,dozen
+2018-10,Milk,Dairy and Eggs,2.913,gallon
+2018-11,Bread,Grains,1.274,pound
+2018-11,Eggs,Dairy and Eggs,1.596,dozen
+2018-11,Milk,Dairy and Eggs,2.877,gallon
+2018-12,Bread,Grains,1.290,pound
+2018-12,Eggs,Dairy and Eggs,1.595,dozen
+2018-12,Milk,Dairy and Eggs,2.853,gallon
+2019-01,Bread,Grains,1.274,pound
+2019-01,Eggs,Dairy and Eggs,1.554,dozen
+2019-01,Milk,Dairy and Eggs,2.913,gallon
+2019-02,Bread,Grains,1.282,pound
+2019-02,Eggs,Dairy and Eggs,1.557,dozen
+2019-02,Milk,Dairy and Eggs,2.900,gallon
+2019-03,Bread,Grains,1.261,pound
+2019-03,Eggs,Dairy and Eggs,1.544,dozen
+2019-03,Milk,Dairy and Eggs,2.944,gallon
+2019-04,Bread,Grains,1.285,pound
+2019-04,Eggs,Dairy and Eggs,1.463,dozen
+2019-04,Milk,Dairy and Eggs,2.980,gallon
+2019-05,Bread,Grains,1.289,pound
+2019-05,Eggs,Dairy and Eggs,1.362,dozen
+2019-05,Milk,Dairy and Eggs,2.963,gallon
+2019-06,Bread,Grains,1.280,pound
+2019-06,Eggs,Dairy and Eggs,1.203,dozen
+2019-06,Milk,Dairy and Eggs,3.054,gallon
+2019-07,Bread,Grains,1.281,pound
+2019-07,Eggs,Dairy and Eggs,1.243,dozen
+2019-07,Milk,Dairy and Eggs,3.031,gallon
+2019-08,Bread,Grains,1.275,pound
+2019-08,Eggs,Dairy and Eggs,1.219,dozen
+2019-08,Milk,Dairy and Eggs,3.045,gallon
+2019-09,Bread,Grains,1.296,pound
+2019-09,Eggs,Dairy and Eggs,1.383,dozen
+2019-09,Milk,Dairy and Eggs,3.102,gallon
+2019-10,Bread,Grains,1.325,pound
+2019-10,Eggs,Dairy and Eggs,1.282,dozen
+2019-10,Milk,Dairy and Eggs,3.119,gallon
+2019-11,Bread,Grains,1.361,pound
+2019-11,Eggs,Dairy and Eggs,1.405,dozen
+2019-11,Milk,Dairy and Eggs,3.189,gallon
+2019-12,Bread,Grains,1.363,pound
+2019-12,Eggs,Dairy and Eggs,1.535,dozen
+2019-12,Milk,Dairy and Eggs,3.188,gallon
+2020-01,Bread,Grains,1.351,pound
+2020-01,Eggs,Dairy and Eggs,1.461,dozen
+2020-01,Milk,Dairy and Eggs,3.253,gallon
+2020-02,Bread,Grains,1.375,pound
+2020-02,Eggs,Dairy and Eggs,1.449,dozen
+2020-02,Milk,Dairy and Eggs,3.196,gallon
+2020-03,Bread,Grains,1.374,pound
+2020-03,Eggs,Dairy and Eggs,1.525,dozen
+2020-03,Milk,Dairy and Eggs,3.248,gallon
+2020-04,Bread,Grains,1.406,pound
+2020-04,Eggs,Dairy and Eggs,2.019,dozen
+2020-04,Milk,Dairy and Eggs,3.267,gallon
+2020-05,Bread,Grains,1.412,pound
+2020-05,Eggs,Dairy and Eggs,1.640,dozen
+2020-05,Milk,Dairy and Eggs,3.210,gallon
+2020-06,Bread,Grains,1.474,pound
+2020-06,Eggs,Dairy and Eggs,1.554,dozen
+2020-06,Milk,Dairy and Eggs,3.198,gallon
+2020-07,Bread,Grains,1.485,pound
+2020-07,Eggs,Dairy and Eggs,1.401,dozen
+2020-07,Milk,Dairy and Eggs,3.255,gallon
+2020-08,Bread,Grains,1.495,pound
+2020-08,Eggs,Dairy and Eggs,1.328,dozen
+2020-08,Milk,Dairy and Eggs,3.406,gallon
+2020-09,Bread,Grains,1.492,pound
+2020-09,Eggs,Dairy and Eggs,1.353,dozen
+2020-09,Milk,Dairy and Eggs,3.448,gallon
+2020-10,Bread,Grains,1.503,pound
+2020-10,Eggs,Dairy and Eggs,1.408,dozen
+2020-10,Milk,Dairy and Eggs,3.380,gallon
+2020-11,Bread,Grains,1.515,pound
+2020-11,Eggs,Dairy and Eggs,1.450,dozen
+2020-11,Milk,Dairy and Eggs,3.425,gallon
+2020-12,Bread,Grains,1.538,pound
+2020-12,Eggs,Dairy and Eggs,1.481,dozen
+2020-12,Milk,Dairy and Eggs,3.535,gallon
+2021-01,Bread,Grains,1.546,pound
+2021-01,Eggs,Dairy and Eggs,1.466,dozen
+2021-01,Milk,Dairy and Eggs,3.468,gallon
+2021-02,Bread,Grains,1.537,pound
+2021-02,Eggs,Dairy and Eggs,1.597,dozen
+2021-02,Milk,Dairy and Eggs,3.368,gallon
+2021-03,Bread,Grains,1.526,pound
+2021-03,Eggs,Dairy and Eggs,1.625,dozen
+2021-03,Milk,Dairy and Eggs,3.348,gallon
+2021-04,Bread,Grains,1.510,pound
+2021-04,Eggs,Dairy and Eggs,1.620,dozen
+2021-04,Milk,Dairy and Eggs,3.447,gallon
+2021-05,Bread,Grains,1.511,pound
+2021-05,Eggs,Dairy and Eggs,1.625,dozen
+2021-05,Milk,Dairy and Eggs,3.497,gallon
+2021-06,Bread,Grains,1.510,pound
+2021-06,Eggs,Dairy and Eggs,1.642,dozen
+2021-06,Milk,Dairy and Eggs,3.557,gallon
+2021-07,Bread,Grains,1.491,pound
+2021-07,Eggs,Dairy and Eggs,1.642,dozen
+2021-07,Milk,Dairy and Eggs,3.627,gallon
+2021-08,Bread,Grains,1.467,pound
+2021-08,Eggs,Dairy and Eggs,1.709,dozen
+2021-08,Milk,Dairy and Eggs,3.560,gallon
+2021-09,Bread,Grains,1.580,pound
+2021-09,Eggs,Dairy and Eggs,1.835,dozen
+2021-09,Milk,Dairy and Eggs,3.585,gallon
+2021-10,Bread,Grains,1.526,pound
+2021-10,Eggs,Dairy and Eggs,1.821,dozen
+2021-10,Milk,Dairy and Eggs,3.663,gallon
+2021-11,Bread,Grains,1.547,pound
+2021-11,Eggs,Dairy and Eggs,1.718,dozen
+2021-11,Milk,Dairy and Eggs,3.671,gallon
+2021-12,Bread,Grains,1.532,pound
+2021-12,Eggs,Dairy and Eggs,1.788,dozen
+2021-12,Milk,Dairy and Eggs,3.743,gallon
+2022-01,Bread,Grains,1.555,pound
+2022-01,Eggs,Dairy and Eggs,1.929,dozen
+2022-01,Milk,Dairy and Eggs,3.787,gallon
+2022-02,Bread,Grains,1.578,pound
+2022-02,Eggs,Dairy and Eggs,2.005,dozen
+2022-02,Milk,Dairy and Eggs,3.875,gallon
+2022-03,Bread,Grains,1.607,pound
+2022-03,Eggs,Dairy and Eggs,2.046,dozen
+2022-03,Milk,Dairy and Eggs,3.917,gallon
+2022-04,Bread,Grains,1.612,pound
+2022-04,Eggs,Dairy and Eggs,2.520,dozen
+2022-04,Milk,Dairy and Eggs,4.012,gallon
+2022-05,Bread,Grains,1.606,pound
+2022-05,Eggs,Dairy and Eggs,2.863,dozen
+2022-05,Milk,Dairy and Eggs,4.204,gallon
+2022-06,Bread,Grains,1.691,pound
+2022-06,Eggs,Dairy and Eggs,2.707,dozen
+2022-06,Milk,Dairy and Eggs,4.153,gallon
+2022-07,Bread,Grains,1.715,pound
+2022-07,Eggs,Dairy and Eggs,2.936,dozen
+2022-07,Milk,Dairy and Eggs,4.156,gallon
+2022-08,Bread,Grains,1.756,pound
+2022-08,Eggs,Dairy and Eggs,3.116,dozen
+2022-08,Milk,Dairy and Eggs,4.194,gallon
+2022-09,Bread,Grains,1.749,pound
+2022-09,Eggs,Dairy and Eggs,2.902,dozen
+2022-09,Milk,Dairy and Eggs,4.181,gallon
+2022-10,Bread,Grains,1.814,pound
+2022-10,Eggs,Dairy and Eggs,3.419,dozen
+2022-10,Milk,Dairy and Eggs,4.184,gallon
+2022-11,Bread,Grains,1.847,pound
+2022-11,Eggs,Dairy and Eggs,3.589,dozen
+2022-11,Milk,Dairy and Eggs,4.218,gallon
+2022-12,Bread,Grains,1.873,pound
+2022-12,Eggs,Dairy and Eggs,4.250,dozen
+2022-12,Milk,Dairy and Eggs,4.211,gallon
+2023-01,Bread,Grains,1.888,pound
+2023-01,Eggs,Dairy and Eggs,4.823,dozen
+2023-01,Milk,Dairy and Eggs,4.204,gallon
+2023-02,Bread,Grains,1.896,pound
+2023-02,Eggs,Dairy and Eggs,4.211,dozen
+2023-02,Milk,Dairy and Eggs,4.163,gallon
+2023-03,Bread,Grains,1.936,pound
+2023-03,Eggs,Dairy and Eggs,3.446,dozen
+2023-03,Milk,Dairy and Eggs,4.098,gallon
+2023-04,Bread,Grains,1.989,pound
+2023-04,Eggs,Dairy and Eggs,3.270,dozen
+2023-04,Milk,Dairy and Eggs,4.042,gallon
+2023-05,Bread,Grains,1.951,pound
+2023-05,Eggs,Dairy and Eggs,2.666,dozen
+2023-05,Milk,Dairy and Eggs,4.042,gallon
+2023-06,Bread,Grains,1.937,pound
+2023-06,Eggs,Dairy and Eggs,2.219,dozen
+2023-06,Milk,Dairy and Eggs,3.985,gallon
+2023-07,Bread,Grains,1.980,pound
+2023-07,Eggs,Dairy and Eggs,2.094,dozen
+2023-07,Milk,Dairy and Eggs,3.971,gallon
+2023-08,Bread,Grains,1.970,pound
+2023-08,Eggs,Dairy and Eggs,2.043,dozen
+2023-08,Milk,Dairy and Eggs,3.927,gallon
+2023-09,Bread,Grains,1.972,pound
+2023-09,Eggs,Dairy and Eggs,2.065,dozen
+2023-09,Milk,Dairy and Eggs,3.965,gallon
+2023-10,Bread,Grains,2.002,pound
+2023-10,Eggs,Dairy and Eggs,2.072,dozen
+2023-10,Milk,Dairy and Eggs,3.927,gallon
+2023-11,Bread,Grains,1.976,pound
+2023-11,Eggs,Dairy and Eggs,2.138,dozen
+2023-11,Milk,Dairy and Eggs,3.997,gallon
+2023-12,Bread,Grains,2.024,pound
+2023-12,Eggs,Dairy and Eggs,2.507,dozen
+2023-12,Milk,Dairy and Eggs,4.008,gallon
+2024-01,Bread,Grains,2.033,pound
+2024-01,Eggs,Dairy and Eggs,2.522,dozen
+2024-01,Milk,Dairy and Eggs,3.958,gallon
+2024-02,Bread,Grains,2.006,pound
+2024-02,Eggs,Dairy and Eggs,2.996,dozen
+2024-02,Milk,Dairy and Eggs,3.940,gallon
+2024-03,Bread,Grains,1.997,pound
+2024-03,Eggs,Dairy and Eggs,2.992,dozen
+2024-03,Milk,Dairy and Eggs,3.893,gallon
+2024-04,Bread,Grains,1.998,pound
+2024-04,Eggs,Dairy and Eggs,2.864,dozen
+2024-04,Milk,Dairy and Eggs,3.868,gallon
+2024-05,Bread,Grains,1.971,pound
+2024-05,Eggs,Dairy and Eggs,2.699,dozen
+2024-05,Milk,Dairy and Eggs,3.864,gallon
+2024-06,Bread,Grains,1.973,pound
+2024-06,Eggs,Dairy and Eggs,2.715,dozen
+2024-06,Milk,Dairy and Eggs,3.956,gallon
+2024-07,Bread,Grains,1.975,pound
+2024-07,Eggs,Dairy and Eggs,3.080,dozen
+2024-07,Milk,Dairy and Eggs,3.983,gallon
+2024-08,Bread,Grains,1.951,pound
+2024-08,Eggs,Dairy and Eggs,3.204,dozen
+2024-08,Milk,Dairy and Eggs,4.044,gallon
+2024-09,Bread,Grains,1.976,pound
+2024-09,Eggs,Dairy and Eggs,3.821,dozen
+2024-09,Milk,Dairy and Eggs,4.021,gallon
+2024-10,Bread,Grains,1.937,pound
+2024-10,Eggs,Dairy and Eggs,3.370,dozen
+2024-10,Milk,Dairy and Eggs,4.041,gallon
+2024-11,Bread,Grains,1.916,pound
+2024-11,Eggs,Dairy and Eggs,3.649,dozen
+2024-11,Milk,Dairy and Eggs,4.138,gallon
+2024-12,Bread,Grains,1.912,pound
+2024-12,Eggs,Dairy and Eggs,4.146,dozen
+2024-12,Milk,Dairy and Eggs,4.101,gallon
+2025-01,Bread,Grains,1.925,pound
+2025-01,Eggs,Dairy and Eggs,4.953,dozen
+2025-01,Milk,Dairy and Eggs,4.025,gallon
+2025-02,Bread,Grains,1.925,pound
+2025-02,Eggs,Dairy and Eggs,5.897,dozen
+2025-02,Milk,Dairy and Eggs,4.026,gallon
+2025-03,Bread,Grains,1.880,pound
+2025-03,Eggs,Dairy and Eggs,6.227,dozen
+2025-03,Milk,Dairy and Eggs,4.050,gallon
+2025-04,Bread,Grains,1.913,pound
+2025-04,Eggs,Dairy and Eggs,5.122,dozen
+2025-04,Milk,Dairy and Eggs,4.074,gallon
+2025-05,Bread,Grains,1.876,pound
+2025-05,Eggs,Dairy and Eggs,4.548,dozen
+2025-05,Milk,Dairy and Eggs,4.022,gallon
+2025-06,Bread,Grains,1.864,pound
+2025-06,Eggs,Dairy and Eggs,3.775,dozen
+2025-06,Milk,Dairy and Eggs,4.029,gallon
+2025-07,Bread,Grains,1.851,pound
+2025-07,Eggs,Dairy and Eggs,3.599,dozen
+2025-07,Milk,Dairy and Eggs,4.162,gallon
+2025-08,Bread,Grains,1.841,pound
+2025-08,Eggs,Dairy and Eggs,3.587,dozen
+2025-08,Milk,Dairy and Eggs,4.171,gallon
+2025-09,Bread,Grains,1.867,pound
+2025-09,Eggs,Dairy and Eggs,3.488,dozen
+2025-09,Milk,Dairy and Eggs,4.129,gallon
+2025-11,Bread,Grains,1.790,pound
+2025-11,Eggs,Dairy and Eggs,2.860,dozen
+2025-11,Milk,Dairy and Eggs,3.997,gallon
+2025-12,Bread,Grains,1.833,pound
+2025-12,Eggs,Dairy and Eggs,2.712,dozen
+2025-12,Milk,Dairy and Eggs,4.047,gallon
+2026-01,Bread,Grains,1.843,pound
+2026-01,Eggs,Dairy and Eggs,2.577,dozen
+2026-01,Milk,Dairy and Eggs,4.100,gallon
+2026-02,Bread,Grains,1.850,pound
+2026-02,Eggs,Dairy and Eggs,2.500,dozen
+2026-02,Milk,Dairy and Eggs,4.026,gallon
+2026-03,Bread,Grains,1.808,pound
+2026-03,Eggs,Dairy and Eggs,2.348,dozen
+2026-03,Milk,Dairy and Eggs,4.067,gallon
+2026-04,Bread,Grains,1.869,pound
+2026-04,Eggs,Dairy and Eggs,2.250,dozen
+2026-04,Milk,Dairy and Eggs,4.136,gallon
+2026-05,Bread,Grains,1.830,pound
+2026-05,Eggs,Dairy and Eggs,2.191,dozen
+2026-05,Milk,Dairy and Eggs,4.217,gallon
+2026-06,Bread,Grains,1.814,pound
+2026-06,Eggs,Dairy and Eggs,2.141,dozen
+2026-06,Milk,Dairy and Eggs,4.317,gallon
+2026-07,Bread,Grains,1.820,pound
+2026-07,Eggs,Dairy and Eggs,2.189,dozen
+2026-07,Milk,Dairy and Eggs,4.313,gallon
+2026-08,Bread,Grains,1.823,pound
+2026-08,Eggs,Dairy and Eggs,2.272,dozen
+2026-08,Milk,Dairy and Eggs,4.229,gallon
+2026-09,Bread,Grains,1.830,pound
+2026-09,Eggs,Dairy and Eggs,2.272,dozen
+2026-09,Milk,Dairy and Eggs,4.106,gallon
+2026-10,Bread,Grains,1.861,pound
+2026-10,Eggs,Dairy and Eggs,2.320,dozen
+2026-10,Milk,Dairy and Eggs,4.101,gallon
