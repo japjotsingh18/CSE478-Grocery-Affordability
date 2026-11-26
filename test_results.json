@@ -1,0 +1,66 @@
+[
+  {
+    "check": "Dataset contains 387 records",
+    "pass": true
+  },
+  {
+    "check": "Page title is correct",
+    "pass": true
+  },
+  {
+    "check": "All three grocery lines are displayed",
+    "pass": true
+  },
+  {
+    "check": "Legend displays all products",
+    "pass": true
+  },
+  {
+    "check": "Eggs has a gap for missing data",
+    "pass": true
+  },
+  {
+    "check": "Milk has a gap for missing data",
+    "pass": true
+  },
+  {
+    "check": "Bread has a gap for missing data",
+    "pass": true
+  },
+  {
+    "check": "Tooltip displays correct prices and units",
+    "pass": true
+  },
+  {
+    "check": "Missing October 2025 data is handled",
+    "pass": true
+  },
+  {
+    "check": "Unchecking Eggs removes its line",
+    "pass": true
+  },
+  {
+    "check": "Selecting only Bread displays one line",
+    "pass": true
+  },
+  {
+    "check": "Unchecking all products removes all lines",
+    "pass": true
+  },
+  {
+    "check": "Selecting all products restores three lines",
+    "pass": true
+  },
+  {
+    "check": "No JavaScript errors",
+    "pass": true
+  },
+  {
+    "check": "Chart works on mobile",
+    "pass": true
+  },
+  {
+    "check": "No horizontal overflow on mobile",
+    "pass": true
+  }
+]
