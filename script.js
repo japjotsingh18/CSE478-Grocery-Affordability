@@ -199,11 +199,205 @@ function init(rows) {
   draw();
 
   initHeatmap(rows, products, unitOf, lastDate);
+  initScatterplot(rows, products, unitOf, color);
 
   let lastWidth = chartDiv.clientWidth;
 
   window.addEventListener("resize", () => {
     if (chartDiv.clientWidth !== lastWidth) { lastWidth = chartDiv.clientWidth; draw(); }
+  });
+}
+
+function initScatterplot(rows, products, unitOf, color) {
+  const scatterplotDiv = document.getElementById("scatterplot");
+  const startSelect = document.getElementById("scatterplot-start-year");
+  const endSelect = document.getElementById("scatterplot-end-year");
+  const scatterplotTooltip = document.getElementById("scatterplot-tooltip");
+  const scatterplotLegend = document.getElementById("scatterplot-legend");
+  const years = d3.range(2016, 2027);
+
+  years.forEach(year => {
+    startSelect.add(new Option(year, year));
+    endSelect.add(new Option(year, year));
+  });
+  startSelect.value = "2016";
+  endSelect.value = "2026";
+
+  products.forEach(product => {
+    const item = document.createElement("span");
+    item.className = "scatterplot-legend-item";
+    item.innerHTML = `<span class="scatterplot-legend-dot" style="background:${color(product)}"></span><strong>${product}</strong>`;
+    scatterplotLegend.appendChild(item);
+  });
+
+  function updateYearOptions() {
+    const startYear = +startSelect.value;
+    const endYear = +endSelect.value;
+    Array.from(startSelect.options).forEach(option => { option.disabled = +option.value > endYear; });
+    Array.from(endSelect.options).forEach(option => { option.disabled = +option.value < startYear; });
+  }
+
+  function calculateStatistics(product, startYear, endYear) {
+    const productRows = rows
+      .filter(row => row.product === product && row.date.getFullYear() >= startYear && row.date.getFullYear() <= endYear)
+      .sort((a, b) => a.date - b.date);
+    if (productRows.length < 2) return null;
+
+    const first = productRows[0];
+    const last = productRows[productRows.length - 1];
+    const growth = ((last.price - first.price) / first.price) * 100;
+    const monthlyChanges = [];
+
+    for (let index = 1; index < productRows.length; index += 1) {
+      const previous = productRows[index - 1];
+      const current = productRows[index];
+      const monthDifference = (current.date.getFullYear() - previous.date.getFullYear()) * 12
+        + current.date.getMonth() - previous.date.getMonth();
+      if (monthDifference === 1) {
+        monthlyChanges.push(((current.price - previous.price) / previous.price) * 100);
+      }
+    }
+    if (monthlyChanges.length === 0) return null;
+    const mean = d3.mean(monthlyChanges);
+    const volatility = Math.sqrt(d3.mean(monthlyChanges, change => (change - mean) ** 2));
+    return { product, first, last, growth, volatility, changeCount: monthlyChanges.length };
+  }
+
+  function drawScatterplot() {
+    scatterplotTooltip.hidden = true;
+    d3.select(scatterplotDiv).select("svg").remove();
+    const startYear = +startSelect.value;
+    const endYear = +endSelect.value;
+    const statistics = products.map(product => calculateStatistics(product, startYear, endYear)).filter(Boolean);
+    const width = scatterplotDiv.clientWidth || 800;
+    const height = Math.max(350, Math.min(500, Math.round(width * 0.58)));
+    const margin = { top: 28, right: width < 560 ? 26 : 50, bottom: 64, left: width < 560 ? 58 : 72 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    const svg = d3.select(scatterplotDiv).insert("svg", ":first-child")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("role", "img")
+      .attr("aria-label", `Scatterplot of grocery price growth and volatility from ${startYear} through ${endYear}`);
+    const chart = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const growthExtent = d3.extent(statistics, item => item.growth);
+    const growthPadding = Math.max(5, (growthExtent[1] - growthExtent[0]) * 0.25);
+    const xMinimum = Math.min(0, growthExtent[0] - growthPadding);
+    const xMaximum = Math.max(0, growthExtent[1] + growthPadding);
+    const maxVolatility = d3.max(statistics, item => item.volatility) || 1;
+    const xScale = d3.scaleLinear().domain([xMinimum, xMaximum]).nice().range([0, innerWidth]);
+    const yScale = d3.scaleLinear().domain([0, maxVolatility * 1.22]).nice().range([innerHeight, 0]);
+
+    chart.append("g").attr("class", "grid")
+      .call(d3.axisLeft(yScale).ticks(6).tickSize(-innerWidth).tickFormat(""));
+    chart.append("line").attr("class", "zero-line")
+      .attr("x1", xScale(0)).attr("x2", xScale(0)).attr("y1", 0).attr("y2", innerHeight);
+    chart.append("text").attr("class", "zero-label")
+      .attr("x", xScale(0) + 5).attr("y", 11).text("Zero growth");
+    chart.append("g").attr("class", "axis").attr("transform", `translate(0,${innerHeight})`)
+      .call(d3.axisBottom(xScale).ticks(width < 560 ? 5 : 7).tickFormat(value => `${value}%`));
+    chart.append("g").attr("class", "axis")
+      .call(d3.axisLeft(yScale).ticks(6).tickFormat(value => `${value}%`));
+    chart.append("text").attr("class", "axis-title").attr("text-anchor", "middle")
+      .attr("x", innerWidth / 2).attr("y", innerHeight + 50).text("Price growth (%)");
+    chart.append("text").attr("class", "axis-title").attr("text-anchor", "middle")
+      .attr("transform", "rotate(-90)").attr("x", -innerHeight / 2).attr("y", -margin.left + 17)
+      .text("Monthly price volatility (%)");
+
+    const pointGroups = chart.selectAll("g.scatter-point-group")
+      .data(statistics).join("g").attr("class", "scatter-point-group")
+      .attr("transform", item => `translate(${xScale(item.growth)},${yScale(item.volatility)})`);
+    pointGroups.append("circle")
+      .attr("class", "scatter-point").attr("data-product", item => item.product)
+      .attr("data-growth", item => item.growth).attr("data-volatility", item => item.volatility)
+      .attr("data-change-count", item => item.changeCount).attr("r", width < 560 ? 7 : 8)
+      .attr("fill", item => color(item.product)).attr("tabindex", 0)
+      .attr("aria-label", item => `${item.product}: ${item.growth.toFixed(2)} percent growth and ${item.volatility.toFixed(2)} percent volatility`)
+      .on("pointermove focus", function(event, item) { showScatterplotTooltip(event, item); })
+      .on("pointerleave blur", () => { scatterplotTooltip.hidden = true; });
+    const labels = pointGroups.append("text")
+      .attr("class", "scatter-label")
+      .text(item => item.product);
+
+    const placedLabels = [];
+    labels.each(function(item) {
+      const label = d3.select(this);
+      const pointX = xScale(item.growth);
+      const pointY = yScale(item.volatility);
+      const rightPositions = [
+        { x: 12, y: -10, anchor: "start" },
+        { x: 12, y: 18, anchor: "start" },
+        { x: 12, y: -26, anchor: "start" },
+        { x: 12, y: 34, anchor: "start" }
+      ];
+      const leftPositions = [
+        { x: -12, y: -10, anchor: "end" },
+        { x: -12, y: 18, anchor: "end" },
+        { x: -12, y: -26, anchor: "end" },
+        { x: -12, y: 34, anchor: "end" }
+      ];
+      const positions = item.product === "Milk"
+        ? [...leftPositions, ...rightPositions]
+        : [...rightPositions, ...leftPositions];
+
+      for (const position of positions) {
+        label.attr("x", position.x).attr("y", position.y).attr("text-anchor", position.anchor);
+        const box = this.getBBox();
+        const labelBox = {
+          left: pointX + box.x,
+          right: pointX + box.x + box.width,
+          top: pointY + box.y,
+          bottom: pointY + box.y + box.height
+        };
+        const insideChart = labelBox.left >= 0 && labelBox.right <= innerWidth
+          && labelBox.top >= 0 && labelBox.bottom <= innerHeight;
+        const overlaps = placedLabels.some(other =>
+          labelBox.left < other.right + 3 && labelBox.right + 3 > other.left
+          && labelBox.top < other.bottom + 3 && labelBox.bottom + 3 > other.top
+        );
+        if (insideChart && !overlaps) {
+          placedLabels.push(labelBox);
+          break;
+        }
+      }
+    });
+
+    function showScatterplotTooltip(event, item) {
+      scatterplotTooltip.innerHTML =
+        `<p class="tt-title">${item.product}</p>` +
+        `<p><strong>Date range:</strong> ${formatMonth(item.first.date)} – ${formatMonth(item.last.date)}</p>` +
+        `<p><strong>Starting price:</strong> ${formatPrice(item.first.price)} / ${unitOf.get(item.product)}</p>` +
+        `<p><strong>Ending price:</strong> ${formatPrice(item.last.price)} / ${unitOf.get(item.product)}</p>` +
+        `<p><strong>Price growth:</strong> ${item.growth.toFixed(2)}%</p>` +
+        `<p><strong>Volatility:</strong> ${item.volatility.toFixed(2)}%</p>`;
+      scatterplotTooltip.dataset.product = item.product;
+      scatterplotTooltip.dataset.start = formatMonthKey(item.first.date);
+      scatterplotTooltip.dataset.end = formatMonthKey(item.last.date);
+      scatterplotTooltip.hidden = false;
+      const containerBox = scatterplotDiv.getBoundingClientRect();
+      const pointBox = event.currentTarget.getBoundingClientRect();
+      const pointX = pointBox.left + pointBox.width / 2 - containerBox.left;
+      const pointY = pointBox.top + pointBox.height / 2 - containerBox.top;
+      let left = pointX + 14;
+      if (left + scatterplotTooltip.offsetWidth > scatterplotDiv.clientWidth) left = pointX - scatterplotTooltip.offsetWidth - 14;
+      let top = pointY - scatterplotTooltip.offsetHeight / 2;
+      top = Math.max(0, Math.min(top, height - scatterplotTooltip.offsetHeight));
+      scatterplotTooltip.style.left = Math.max(0, left) + "px";
+      scatterplotTooltip.style.top = top + "px";
+    }
+  }
+
+  startSelect.addEventListener("change", () => { updateYearOptions(); drawScatterplot(); });
+  endSelect.addEventListener("change", () => { updateYearOptions(); drawScatterplot(); });
+  updateYearOptions();
+  drawScatterplot();
+
+  let lastScatterplotWidth = scatterplotDiv.clientWidth;
+  window.addEventListener("resize", () => {
+    if (scatterplotDiv.clientWidth !== lastScatterplotWidth) {
+      lastScatterplotWidth = scatterplotDiv.clientWidth;
+      drawScatterplot();
+    }
   });
 }
 
