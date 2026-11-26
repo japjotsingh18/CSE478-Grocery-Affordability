@@ -1,0 +1,18 @@
+[PASS] Columns are date,product,category,price,unit
+[PASS] No empty cells
+[PASS] All dates match YYYY-MM
+[PASS] All prices numeric
+[PASS] All prices positive - min 1.203, max 6.227
+[PASS] No duplicate product-month rows
+[PASS] Sorted by date then product
+[PASS] One unit per product - {'Bread': 'pound', 'Eggs': 'dozen', 'Milk': 'gallon'}
+[PASS] Products are Bread, Eggs, Milk
+[PASS] Only documented months are missing - {'Bread': ['2025-10'], 'Eggs': ['2025-10'], 'Milk': ['2025-10']}
+[PASS] Latest 5 months match FRED series-page panels (15 values)
+
+Total records     : 387
+Date range        : 2016-01 to 2026-10 (130 calendar months)
+Records / product : {'Bread': 129, 'Eggs': 129, 'Milk': 129}
+Missing (removed) : Eggs 2025-10 (FRED value '.'); Milk 2025-10 (FRED value '.'); Bread 2025-10 (FRED value '.')
+
+OVERALL: ALL CHECKS PASSED
