@@ -200,12 +200,157 @@ function init(rows) {
 
   initHeatmap(rows, products, unitOf, lastDate);
   initScatterplot(rows, products, unitOf, color);
+  initTreemap(allMonths, lookup, unitOf, color);
 
   let lastWidth = chartDiv.clientWidth;
 
   window.addEventListener("resize", () => {
     if (chartDiv.clientWidth !== lastWidth) { lastWidth = chartDiv.clientWidth; draw(); }
   });
+}
+
+function initTreemap(allMonths, lookup, unitOf, color) {
+  const chart = document.getElementById("treemap");
+  const yearSelect = document.getElementById("treemap-year");
+  const monthSelect = document.getElementById("treemap-month");
+  const dateLabel = document.getElementById("treemap-date");
+  const totalLabel = document.getElementById("treemap-total");
+  const tip = document.getElementById("treemap-tooltip");
+  const formatDate = d3.timeFormat("%B %Y");
+  const formatPercent = d3.format(".2%");
+  const years = [...new Set(allMonths.map(date => date.getFullYear()))];
+  const months = d3.range(12).map(month => d3.timeFormat("%B")(new Date(2000, month)));
+  const baskets = new Map();
+
+  allMonths.forEach(date => {
+    const key = formatMonthKey(date);
+    const items = PRODUCT_ORDER.map(product => ({
+      product, cost: lookup.get(product)?.get(key), unit: unitOf.get(product)
+    }));
+    if (items.every(item => Number.isFinite(item.cost) && item.cost > 0)) {
+      baskets.set(key, items);
+    }
+  });
+  if (!baskets.size) return;
+
+  years.forEach(year => yearSelect.add(new Option(year, year)));
+  months.forEach((name, month) => {
+    monthSelect.add(new Option(name, String(month + 1).padStart(2, "0")));
+  });
+
+  const svg = d3.select(chart).insert("svg", ":first-child")
+    .attr("role", "group").attr("aria-labelledby", "treemap-title");
+  const [latestYear, latestMonth] = Array.from(baskets.keys()).pop().split("-");
+  yearSelect.value = latestYear;
+  monthSelect.value = latestMonth;
+
+  function updateMonths() {
+    const available = Array.from(monthSelect.options).filter(option => {
+      option.disabled = !baskets.has(yearSelect.value + "-" + option.value);
+      return !option.disabled;
+    });
+    if (monthSelect.selectedOptions[0]?.disabled) {
+      monthSelect.value = available[available.length - 1]?.value ?? "";
+    }
+    draw();
+  }
+
+  function draw() {
+    tip.hidden = true;
+    const key = yearSelect.value + "-" + monthSelect.value;
+    const items = baskets.get(key);
+    const date = formatDate(parseMonth(key));
+    const width = chart.clientWidth;
+    const compact = width < 500;
+    const height = compact ? 280 : 320;
+    const root = d3.hierarchy({ children: items }).sum(item => item.cost);
+    d3.treemap().tile(compact ? d3.treemapSlice : d3.treemapSquarify).size([width, height])(root);
+    const total = root.value;
+
+    dateLabel.dateTime = key;
+    dateLabel.textContent = date;
+    totalLabel.textContent = formatPrice(total);
+    svg.attr("viewBox", `0 0 ${width} ${height}`);
+
+    const tiles = svg.selectAll("g").data(root.leaves(), leaf => leaf.data.product).join("g")
+      .attr("transform", leaf => `translate(${leaf.x0},${leaf.y0})`)
+      .attr("color", leaf => leaf.data.product === "Eggs" ? "#17213a" : "#fff");
+    let hoveredTile = null;
+    let focusedTile = null;
+
+    tiles.selectAll("rect").data(leaf => [leaf]).join("rect")
+      .attr("class", "treemap-tile")
+      .attr("data-product", leaf => leaf.data.product)
+      .attr("width", leaf => leaf.x1 - leaf.x0)
+      .attr("height", leaf => leaf.y1 - leaf.y0)
+      .attr("fill", leaf => color(leaf.data.product))
+      .attr("tabindex", 0)
+      .attr("role", "img")
+      .attr("aria-label", ({ data: item }) =>
+        `${item.product}, ${date}. ${quantity(item)}. Price ${formatPrice(item.cost)} per ${item.unit}. ` +
+        `Basket contribution ${formatPrice(item.cost)}, ${formatPercent(item.cost / total)} of total.`)
+      .on("pointerenter", (_, leaf) => { hoveredTile = leaf; showTip(leaf); })
+      .on("focus", (_, leaf) => { focusedTile = leaf; showTip(leaf); })
+      .on("pointerleave", () => { hoveredTile = null; keepTipFor(focusedTile); })
+      .on("blur", () => { focusedTile = null; keepTipFor(hoveredTile); })
+      .on("keydown", event => { if (event.key === "Escape") tip.hidden = true; });
+
+    tiles.selectAll("text").data(leaf => [leaf]).join("text")
+      .attr("class", "treemap-label")
+      .attr("aria-hidden", "true")
+      .attr("fill", "currentColor")
+      .attr("y", leaf => compact ? (leaf.y1 - leaf.y0) / 2 + 5 : 26)
+      .each(function (leaf) {
+        const lines = [leaf.data.product, formatPrice(leaf.value), formatPercent(leaf.value / total)];
+        const columns = [10, width * 0.38, width * 0.7];
+        d3.select(this).selectAll("tspan").data(lines).join("tspan")
+          .attr("x", (_, index) => compact ? columns[index] : 10)
+          .attr("dy", (_, index) => !compact && index ? 19 : 0)
+          .text(line => line)
+          .each(function () {
+            const box = this.getBBox();
+            this.setAttribute("visibility",
+              box.x + box.width + 4 <= leaf.x1 - leaf.x0 && box.y >= 0 &&
+                box.y + box.height + 4 <= leaf.y1 - leaf.y0
+                ? "visible" : "hidden");
+          });
+      });
+
+    function keepTipFor(leaf) {
+      if (tip.hidden) return;
+      if (leaf) showTip(leaf);
+      else tip.hidden = true;
+    }
+
+    function showTip(leaf) {
+      const item = leaf.data;
+      tip.innerHTML = `<p><strong>${item.product}</strong> · ${date}</p>` +
+        `<p>Basket quantity: ${quantity(item)}</p>` +
+        `<p>Price: ${formatPrice(item.cost)} per ${item.unit}</p>` +
+        `<p>Basket contribution: ${formatPrice(item.cost)}</p>` +
+        `<p>Share of total: ${formatPercent(item.cost / total)}</p>`;
+      tip.hidden = false;
+      const left = leaf.x1 + 8 + tip.offsetWidth <= width ? leaf.x1 + 8 : leaf.x0 - tip.offsetWidth - 8;
+      const top = (leaf.y0 + leaf.y1 - tip.offsetHeight) / 2;
+      tip.style.left = Math.max(0, Math.min(left, width - tip.offsetWidth)) + "px";
+      tip.style.top = Math.max(0, Math.min(top, height - tip.offsetHeight)) + "px";
+    }
+  }
+
+  function quantity(item) {
+    return `1 ${item.unit}`;
+  }
+
+  yearSelect.addEventListener("change", updateMonths);
+  monthSelect.addEventListener("change", draw);
+  updateMonths();
+  let lastWidth = chart.clientWidth;
+  new ResizeObserver(() => {
+    if (chart.clientWidth !== lastWidth) {
+      lastWidth = chart.clientWidth;
+      draw();
+    }
+  }).observe(chart);
 }
 
 function initScatterplot(rows, products, unitOf, color) {

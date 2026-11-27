@@ -166,7 +166,7 @@ h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
 .heatmap-tooltip .tt-title { margin-bottom: 5px; font-weight: 700; }
 .heatmap-tooltip .tt-status { color: var(--muted); font-style: italic; }
 
-.scatterplot-controls {
+.scatterplot-controls, .treemap-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -174,7 +174,7 @@ h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
   margin: 16px 0 8px;
 }
 .scatterplot-controls label:not(:first-child) { margin-left: 10px; }
-.scatterplot-controls select {
+.scatterplot-controls select, .treemap-controls select {
   padding: 6px 28px 6px 8px;
   border: 1px solid var(--muted);
   border-radius: 4px;
@@ -192,6 +192,25 @@ h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
 .zero-label { font-family: var(--sans); font-size: 11px; fill: var(--muted); }
 .scatterplot-tooltip p { margin: 2px 0; }
 .scatterplot-tooltip .tt-title { margin-bottom: 5px; font-weight: 700; }
+
+.treemap-controls > div { display: flex; align-items: center; gap: 10px; }
+.treemap-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin: 0 0 8px;
+}
+.treemap-summary time { font-weight: 700; }
+.treemap-summary strong { margin-left: 5px; color: var(--maroon); font-size: 1.25rem; }
+#treemap svg { overflow: hidden; border-radius: 4px; }
+.treemap-tile { cursor: pointer; }
+.treemap-tile:focus-visible { outline: none; stroke: currentColor; stroke-width: 4; }
+.treemap-label { font-size: 13px; pointer-events: none; }
+.treemap-label tspan:first-child { font-size: 16px; font-weight: 700; }
+.treemap-tooltip { min-width: 0; max-width: 100%; }
+.treemap-tooltip p { margin: 2px 0; }
 
 .about ul { margin: 10px 0 0; padding-left: 20px; }
 .about li { margin-bottom: 8px; max-width: 75ch; }
@@ -213,5 +232,6 @@ h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
   section { padding: 16px; }
   .site-header { padding-top: 24px; }
   .scatterplot-controls label:not(:first-child) { margin-left: 0; }
+  .treemap-controls > div { align-items: flex-start; flex-direction: column; gap: 4px; }
 }
 .site-footer a { color: var(--maroon); }
