@@ -212,6 +212,43 @@ h2 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.4rem; }
 .treemap-tooltip { min-width: 0; max-width: 100%; }
 .treemap-tooltip p { margin: 2px 0; }
 
+.boxplot-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 8px;
+}
+.boxplot-controls select {
+  padding: 6px 28px 6px 8px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+.boxplot-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.boxplot-key > span { display: inline-flex; align-items: center; gap: 7px; }
+.boxplot-key-box { width: 20px; height: 14px; border: 2px solid var(--muted); background: #d8dde6; }
+.boxplot-key-median { width: 20px; border-top: 3px solid var(--ink); }
+.boxplot-key-whisker { width: 20px; border-top: 1px solid var(--muted); }
+.boxplot-key-outlier { width: 9px; height: 9px; border: 2px solid var(--muted); border-radius: 50%; }
+.boxplot-coverage { margin: 0 0 8px; color: var(--muted); font-size: 0.85rem; }
+.boxplot-mark { cursor: pointer; }
+.boxplot-mark:focus { outline: none; stroke: var(--ink); stroke-width: 3; }
+.boxplot-whisker, .boxplot-cap { stroke-width: 1.5; }
+.boxplot-median { stroke-width: 3; }
+.boxplot-outlier { stroke-width: 2; }
+.boxplot-tooltip { min-width: 210px; max-width: 100%; }
+.boxplot-tooltip p { margin: 2px 0; }
+.boxplot-tooltip .tt-title { margin-bottom: 5px; font-weight: 700; }
+
 .about ul { margin: 10px 0 0; padding-left: 20px; }
 .about li { margin-bottom: 8px; max-width: 75ch; }
 .site-footer {

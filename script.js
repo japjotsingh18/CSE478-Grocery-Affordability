@@ -201,12 +201,226 @@ function init(rows) {
   initHeatmap(rows, products, unitOf, lastDate);
   initScatterplot(rows, products, unitOf, color);
   initTreemap(allMonths, lookup, unitOf, color);
+  initBoxplot(rows, products, unitOf, color);
 
   let lastWidth = chartDiv.clientWidth;
 
   window.addEventListener("resize", () => {
     if (chartDiv.clientWidth !== lastWidth) { lastWidth = chartDiv.clientWidth; draw(); }
   });
+}
+
+function initBoxplot(rows, products, unitOf, color) {
+  const chartDiv = document.getElementById("boxplot");
+  const productSelect = document.getElementById("boxplot-product");
+  const boxplotTooltip = document.getElementById("boxplot-tooltip");
+  const years = d3.range(2016, 2027);
+
+  products.forEach(product => productSelect.add(new Option(product, product)));
+  productSelect.value = "Eggs";
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") boxplotTooltip.hidden = true;
+  });
+
+  function calculateYear(product, year) {
+    const observations = rows
+      .filter(row => row.product === product && row.date.getFullYear() === year)
+      .sort((a, b) => a.price - b.price);
+    const prices = observations.map(row => row.price);
+    const q1 = d3.quantileSorted(prices, 0.25);
+    const median = d3.quantileSorted(prices, 0.5);
+    const q3 = d3.quantileSorted(prices, 0.75);
+    const iqr = q3 - q1;
+    const lowerFence = q1 - 1.5 * iqr;
+    const upperFence = q3 + 1.5 * iqr;
+    const withinFences = observations.filter(row => row.price >= lowerFence && row.price <= upperFence);
+    const outliers = observations.filter(row => row.price < lowerFence || row.price > upperFence);
+    return {
+      product, year, observations, q1, median, q3,
+      minimum: prices[0], maximum: prices[prices.length - 1],
+      lowerWhisker: withinFences[0].price,
+      upperWhisker: withinFences[withinFences.length - 1].price,
+      outliers
+    };
+  }
+
+  function drawBoxplot() {
+    boxplotTooltip.hidden = true;
+    d3.select(chartDiv).select("svg").remove();
+    const product = productSelect.value;
+    const statistics = years.map(year => calculateYear(product, year));
+    const allPrices = statistics.flatMap(item => item.observations.map(row => row.price));
+    const width = chartDiv.clientWidth || 800;
+    const height = width < 560 ? 370 : 460;
+    const margin = { top: 20, right: 18, bottom: 58, left: width < 560 ? 78 : 72 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+    const priceExtent = d3.extent(allPrices);
+    const pricePadding = Math.max(0.08, (priceExtent[1] - priceExtent[0]) * 0.1);
+    const xScale = d3.scaleBand().domain(years).range([0, innerWidth]).padding(0.32);
+    const yScale = d3.scaleLinear()
+      .domain([Math.max(0, priceExtent[0] - pricePadding), priceExtent[1] + pricePadding])
+      .nice().range([innerHeight, 0]);
+
+    const svg = d3.select(chartDiv).insert("svg", ":first-child")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("role", "group")
+      .attr("aria-labelledby", "boxplot-title");
+    const chart = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+    chart.append("g").attr("class", "grid")
+      .call(d3.axisLeft(yScale).ticks(6).tickSize(-innerWidth).tickFormat(""));
+    chart.append("g").attr("class", "axis boxplot-x-axis")
+      .attr("transform", `translate(0,${innerHeight})`)
+      .call(d3.axisBottom(xScale).tickValues(width < 560 ? years.filter(year => year % 2 === 0) : years));
+    chart.append("g").attr("class", "axis boxplot-y-axis")
+      .call(d3.axisLeft(yScale).ticks(6).tickFormat(formatAxisPrice));
+    chart.append("text").attr("class", "axis-title").attr("text-anchor", "middle")
+      .attr("x", innerWidth / 2).attr("y", innerHeight + 46).text("Year");
+    chart.append("text").attr("class", "axis-title").attr("text-anchor", "middle")
+      .attr("transform", "rotate(-90)").attr("x", -innerHeight / 2).attr("y", -margin.left + 17)
+      .text(`Monthly price (US dollars per ${unitOf.get(product)})`);
+
+    const groups = chart.selectAll("g.boxplot-year")
+      .data(statistics).join("g")
+      .attr("class", "boxplot-year")
+      .attr("data-year", item => item.year)
+      .attr("transform", item => `translate(${xScale(item.year)},0)`);
+    const boxWidth = xScale.bandwidth();
+    const center = boxWidth / 2;
+    const capWidth = Math.max(8, boxWidth * 0.65);
+
+    groups.append("line").attr("class", "boxplot-whisker")
+      .attr("x1", center).attr("x2", center)
+      .attr("y1", item => yScale(item.lowerWhisker)).attr("y2", item => yScale(item.upperWhisker))
+      .attr("stroke", color(product));
+    groups.append("line").attr("class", "boxplot-cap lower-cap")
+      .attr("x1", center - capWidth / 2).attr("x2", center + capWidth / 2)
+      .attr("y1", item => yScale(item.lowerWhisker)).attr("y2", item => yScale(item.lowerWhisker))
+      .attr("stroke", color(product));
+    groups.append("line").attr("class", "boxplot-cap upper-cap")
+      .attr("x1", center - capWidth / 2).attr("x2", center + capWidth / 2)
+      .attr("y1", item => yScale(item.upperWhisker)).attr("y2", item => yScale(item.upperWhisker))
+      .attr("stroke", color(product));
+    groups.append("rect").attr("class", "boxplot-box")
+      .attr("x", 0).attr("width", boxWidth)
+      .attr("y", item => yScale(item.q3))
+      .attr("height", item => Math.max(1, yScale(item.q1) - yScale(item.q3)))
+      .attr("fill", color(product)).attr("fill-opacity", 0.28)
+      .attr("stroke", color(product)).attr("stroke-width", 2);
+    groups.append("line").attr("class", "boxplot-median")
+      .attr("x1", 0).attr("x2", boxWidth)
+      .attr("y1", item => yScale(item.median)).attr("y2", item => yScale(item.median))
+      .attr("stroke", color(product));
+
+    let hoveredItem = null;
+    let focusedItem = null;
+    const hitAreas = groups.append("rect")
+      .attr("class", "boxplot-mark boxplot-hit")
+      .attr("data-year", item => item.year)
+      .attr("data-count", item => item.observations.length)
+      .attr("data-min", item => item.minimum).attr("data-q1", item => item.q1)
+      .attr("data-median", item => item.median).attr("data-q3", item => item.q3)
+      .attr("data-max", item => item.maximum)
+      .attr("data-lower-whisker", item => item.lowerWhisker)
+      .attr("data-upper-whisker", item => item.upperWhisker)
+      .attr("data-outlier-count", item => item.outliers.length)
+      .attr("x", -3).attr("width", boxWidth + 6)
+      .attr("y", item => yScale(item.maximum) - 7)
+      .attr("height", item => Math.max(14, yScale(item.minimum) - yScale(item.maximum) + 14))
+      .attr("fill", "#fff").attr("fill-opacity", 0).attr("stroke", "transparent")
+      .attr("tabindex", 0).attr("role", "img")
+      .attr("aria-label", item => `${product}, ${item.year}. ${item.observations.length} observations. ` +
+        `Minimum ${formatPrice(item.minimum)}, Q1 ${formatPrice(item.q1)}, median ${formatPrice(item.median)}, ` +
+        `Q3 ${formatPrice(item.q3)}, maximum ${formatPrice(item.maximum)}. ` +
+        `Lower whisker ${formatPrice(item.lowerWhisker)}, upper whisker ${formatPrice(item.upperWhisker)}. ` +
+        `${item.outliers.length} outliers. Prices per ${unitOf.get(product)}.`)
+      .on("pointerenter", function(event, item) { hoveredItem = { type: "year", item, target: this }; showYearTooltip(item, this); })
+      .on("focus", function(event, item) { focusedItem = { type: "year", item, target: this }; showYearTooltip(item, this); })
+      .on("pointerleave", () => { hoveredItem = null; keepTooltipFor(focusedItem); })
+      .on("blur", () => { focusedItem = null; keepTooltipFor(hoveredItem); })
+      .on("keydown", event => { if (event.key === "Escape") boxplotTooltip.hidden = true; });
+
+    const outlierData = statistics.flatMap(item => item.outliers.map(row => ({ row, statistics: item })));
+    outlierData.forEach(item => {
+      const nearby = outlierData.filter(other => other.statistics.year === item.statistics.year
+        && Math.abs(yScale(other.row.price) - yScale(item.row.price)) < 12);
+      item.offset = (nearby.indexOf(item) - (nearby.length - 1) / 2) * 12;
+    });
+    chart.selectAll("circle.boxplot-outlier")
+      .data(outlierData).join("circle")
+      .attr("class", "boxplot-mark boxplot-outlier")
+      .attr("data-product", product).attr("data-month", item => formatMonthKey(item.row.date))
+      .attr("data-price", item => item.row.price)
+      .attr("cx", item => xScale(item.statistics.year) + center + item.offset)
+      .attr("cy", item => yScale(item.row.price)).attr("r", width < 560 ? 4 : 5)
+      .attr("fill", "#fff").attr("stroke", color(product))
+      .attr("tabindex", 0).attr("role", "img")
+      .attr("aria-label", item => `${product}, ${formatMonth(item.row.date)}, outlier price ${formatPrice(item.row.price)} per ${item.row.unit}`)
+      .on("pointerenter", function(event, item) { hoveredItem = { type: "outlier", item, target: this }; showOutlierTooltip(item, this); })
+      .on("focus", function(event, item) { focusedItem = { type: "outlier", item, target: this }; showOutlierTooltip(item, this); })
+      .on("pointerleave", () => { hoveredItem = null; keepTooltipFor(focusedItem); })
+      .on("blur", () => { focusedItem = null; keepTooltipFor(hoveredItem); })
+      .on("keydown", event => { if (event.key === "Escape") boxplotTooltip.hidden = true; });
+
+    function keepTooltipFor(active) {
+      if (boxplotTooltip.hidden) return;
+      if (!active) { boxplotTooltip.hidden = true; return; }
+      if (active.type === "year") showYearTooltip(active.item, active.target);
+      else showOutlierTooltip(active.item, active.target);
+    }
+
+    function showYearTooltip(item, target) {
+      boxplotTooltip.innerHTML = `<p class="tt-title">${product} · ${item.year}</p>` +
+        `<p><strong>Observations:</strong> ${item.observations.length}</p>` +
+        `<p><strong>Minimum:</strong> ${formatPrice(item.minimum)}</p>` +
+        `<p><strong>Q1:</strong> ${formatPrice(item.q1)}</p>` +
+        `<p><strong>Median:</strong> ${formatPrice(item.median)}</p>` +
+        `<p><strong>Q3:</strong> ${formatPrice(item.q3)}</p>` +
+        `<p><strong>Maximum:</strong> ${formatPrice(item.maximum)}</p>` +
+        `<p><strong>Whiskers:</strong> ${formatPrice(item.lowerWhisker)} – ${formatPrice(item.upperWhisker)}</p>` +
+        `<p><strong>Outliers:</strong> ${item.outliers.length}</p>`;
+      boxplotTooltip.dataset.type = "year";
+      boxplotTooltip.dataset.year = item.year;
+      showTooltipAt(target);
+    }
+
+    function showOutlierTooltip(item, target) {
+      boxplotTooltip.innerHTML = `<p class="tt-title">${product}</p>` +
+        `<p><strong>Month:</strong> ${formatMonth(item.row.date)}</p>` +
+        `<p><strong>Price:</strong> ${formatPrice(item.row.price)} / ${item.row.unit}</p>`;
+      boxplotTooltip.dataset.type = "outlier";
+      boxplotTooltip.dataset.month = formatMonthKey(item.row.date);
+      showTooltipAt(target);
+    }
+
+    function showTooltipAt(target) {
+      boxplotTooltip.hidden = false;
+      const chartBox = chartDiv.getBoundingClientRect();
+      const targetBox = target.getBoundingClientRect();
+      const targetX = targetBox.left + targetBox.width / 2 - chartBox.left;
+      const targetY = targetBox.top + targetBox.height / 2 - chartBox.top;
+      let left = targetX + 12;
+      if (left + boxplotTooltip.offsetWidth > chartDiv.clientWidth) {
+        left = targetX - boxplotTooltip.offsetWidth - 12;
+      }
+      const above = targetBox.top - chartBox.top - boxplotTooltip.offsetHeight - 12;
+      const top = Math.max(margin.top, Math.min(above,
+        margin.top + innerHeight - boxplotTooltip.offsetHeight));
+      boxplotTooltip.style.left = Math.max(0, left) + "px";
+      boxplotTooltip.style.top = top + "px";
+    }
+  }
+
+  productSelect.addEventListener("change", drawBoxplot);
+  drawBoxplot();
+  let lastWidth = chartDiv.clientWidth;
+  new ResizeObserver(() => {
+    if (chartDiv.clientWidth !== lastWidth) {
+      lastWidth = chartDiv.clientWidth;
+      drawBoxplot();
+    }
+  }).observe(chartDiv);
 }
 
 function initTreemap(allMonths, lookup, unitOf, color) {
