@@ -25,9 +25,10 @@
   <main>
     <section class="chart-section" aria-labelledby="chart-title">
       <h2 id="chart-title">Grocery Prices in the U.S. (2016–2026)</h2>
-      <p class="chart-help">Select the grocery items you want to see. Hover over the lines to view their prices.</p>
-
-      <!-- The legend and the product checkboxes are the same control. script.js fills it in from the CSV. -->
+    <p class="chart-help">
+      This line chart shows how the prices of eggs, milk and bread have changed between 2016 and 2026. It helps us identify long-term price trends and periods when grocery prices increased or decreased significantly.
+    </p>
+    <p class="chart-help">Select the grocery items you want to see. Hover over the lines to view their prices.</p>
       <fieldset class="legend" id="legend">
         <legend>Legend and product selector</legend>
       </fieldset>
@@ -35,17 +36,18 @@
       <div class="chart-wrap" id="chart">
         <div class="tooltip" id="tooltip" role="status" aria-live="polite" hidden></div>
       </div>
-
+      <p class="chart-help">
+      Milk and bread prices have generally increased over time, while egg prices have experienced more noticeable fluctuations. Egg prices increased sharply during late 2022 and early 2025 before decreasing again. These changes can make it difficult for students to plan a consistent grocery budget.
+    </p>
       <p class="note">Note: October 2025 data is unavailable.</p>
       <p class="note">Note: Eggs are priced per dozen, milk per gallon and bread per pound. Each item should be compared with its own past prices.</p>
     </section>
 
     <section class="heatmap-section" aria-labelledby="heatmap-title">
-      <h2 id="heatmap-title">Monthly Grocery Price Heatmap (2016–2026)</h2>
+      <h2 id="heatmap-title">Monthly Grocery Price Heatmap (2016-2026)</h2>
 
-      <p class="team-todo">
-        <strong>TEAM TODO — Visualization introduction (2–3 sentences):</strong>
-        Introduce the heatmap and explain its purpose before the visualization.
+      <p class="chart-help">
+      This heatmap illustrates how the monthly costs of bread, milk as well as eggs has changed over time. Hover your cursor over a cell to view the item's pricing. Select an item from the dropdown menu and then compare the colors over months and years.
       </p>
 
       <div class="heatmap-controls">
@@ -68,18 +70,15 @@
         <span><span class="key-swatch outside-swatch"></span>Outside dataset range</span>
       </div>
 
-      <p class="team-todo">
-        <strong>TEAM TODO — Observations and story connection (3–4 sentences):</strong>
-        Discuss observed patterns and connect the heatmap to the overall project story after the visualization.
+      <p class="chart-help">
+        According to the heatmap, egg prices remained comparatively stable from 2016 to 2021 before becoming more uneven from 2022 onward. In late 2022 and early 2023, prices increased dramatically; later in 2023, they decreased; and in 2024 and early 2025, they increased once again. The hatched November and December 2026 cells are outside the dataset period, while the gray cell indicates an unavailable Oct.2025 observation. These monthly variations show why examining the full timeline provides context for the project's inquiry regarding grocery costs and student spending plans.
       </p>
     </section>
 
     <section class="scatterplot-section" aria-labelledby="scatterplot-title">
       <h2 id="scatterplot-title">Grocery Price Growth vs. Volatility</h2>
 
-      <p class="team-todo">
-        <strong>TEAM TODO — Visualization introduction (2–3 sentences):</strong>
-        Introduce the scatterplot and explain its purpose before the visualization.
+      <p class="chart-help">This scatterplot compares the monthly volatility and price increase for bread, milk as well as eggs over a chosen range. Select the beginning and ending years to observe how much each item's price fluctuates over that time.
       </p>
 
       <div class="scatterplot-controls" aria-label="Scatterplot year range">
@@ -97,18 +96,16 @@
         <div class="tooltip scatterplot-tooltip" id="scatterplot-tooltip" role="status" aria-live="polite" hidden></div>
       </div>
 
-      <p class="team-todo">
-        <strong>TEAM TODO — Observations and story connection (3–4 sentences):</strong>
-        Discuss observed patterns and connect the scatterplot to the overall project story after the visualization.
+      <p class="chart-help">
+        The chart shows milk and bread with greater price growth and lower volatility than eggs for 2016–2026. Bread has the highest growth, while milk and bread have similar volatility. Eggs show little overall growth but much greater month-month variation. When taken as a whole, the points indicate that these three food products have different price increase and volatility.
       </p>
     </section>
 
     <section class="treemap-section" aria-labelledby="treemap-title">
       <h2 id="treemap-title">Grocery Basket Cost Breakdown</h2>
 
-      <p class="team-todo">
-        <strong>TEAM TODO — Visualization introduction (2–3 sentences):</strong>
-        Introduce the treemap and explain its purpose before the visualization.
+      <p class="chart-help">
+        This treemap visualizes the cost breakdown of an illustrative grocery basket over time. Each rectangle represents a different food item, with the size of the rectangle indicating its proportion of the total basket cost.
       </p>
 
       <div class="treemap-controls">
@@ -132,9 +129,8 @@
         <div class="tooltip treemap-tooltip" id="treemap-tooltip" role="tooltip" hidden></div>
       </div>
 
-      <p class="team-todo">
-        <strong>TEAM TODO — Observations and story connection (3–4 sentences):</strong>
-        Discuss observed patterns and connect the treemap to the overall project story after the visualization.
+      <p class="chart-help">
+      In October 2016, the illustrative basket cost $6.025; by October 2026, it cost $8.282, an increase of about 37%. Milk remained the largest part of the basket in both years, though its share fell from 54.64% to 49.52%. Eggs made up a larger share in 2026, while bread's share stayed close to 22%.      
       </p>
     </section>
 
