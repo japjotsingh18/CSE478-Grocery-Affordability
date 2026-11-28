@@ -138,6 +138,41 @@
       </p>
     </section>
 
+    <section class="boxplot-section" aria-labelledby="boxplot-title">
+      <h2 id="boxplot-title">Annual Grocery Price Distributions</h2>
+
+      <p class="team-todo">
+        <strong>TEAM TODO — Visualization introduction (2–3 sentences):</strong>
+        Introduce the box plot and explain its purpose before the visualization.
+      </p>
+
+      <div class="boxplot-controls">
+        <label for="boxplot-product"><strong>Grocery item:</strong></label>
+        <select id="boxplot-product"></select>
+      </div>
+
+      <p class="chart-help">Select a grocery item. Hover over or focus on a box or outlier to view its statistics.</p>
+
+      <div class="boxplot-key" aria-label="Box plot legend">
+        <span><span class="boxplot-key-box"></span>Middle 50% (Q1–Q3)</span>
+        <span><span class="boxplot-key-median"></span>Median</span>
+        <span><span class="boxplot-key-whisker"></span>Whiskers</span>
+        <span><span class="boxplot-key-outlier"></span>Outlier</span>
+      </div>
+
+      <p class="boxplot-coverage"><strong>Incomplete annual coverage:</strong> 2025 has 11 months; 2026 has 10 months.</p>
+      <p class="boxplot-coverage boxplot-rule">Whiskers reach the lowest and highest actual prices within 1.5 × IQR below Q1 and above Q3. Prices beyond these limits are outliers. IQR = Q3 − Q1.</p>
+
+      <div class="chart-wrap" id="boxplot">
+        <div class="tooltip boxplot-tooltip" id="boxplot-tooltip" role="tooltip" hidden></div>
+      </div>
+
+      <p class="team-todo">
+        <strong>TEAM TODO — Observations and story connection (3–4 sentences):</strong>
+        Discuss observed patterns and connect the box plot to the overall project story after the visualization.
+      </p>
+    </section>
+
     <section class="about" aria-labelledby="about-title">
       <h2 id="about-title">About the Data</h2>
       <ul>
